@@ -1,0 +1,54 @@
+﻿@model DesafioCRUDItau.Models.Chamado
+
+@{
+    ViewData["Title"] = "Editar chamado";
+}
+
+<h1>Editar Chamado</h1>
+
+<h4>Chamado</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="GravidadeId" class="control-label"></label>
+                <select asp-for="GravidadeId" class="form-control" asp-items="ViewBag.GravidadeId"></select>
+                <span asp-validation-for="GravidadeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoSolicitacaoId" class="control-label"></label>
+                <select asp-for="TipoSolicitacaoId" class="form-control" asp-items="ViewBag.TipoSolicitacaoId"></select>
+                <span asp-validation-for="TipoSolicitacaoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assunto" class="control-label"></label>
+                <input asp-for="Assunto" class="form-control" />
+                <span asp-validation-for="Assunto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Menssagem" class="control-label"></label>
+                <input asp-for="Menssagem" class="form-control" />
+                <span asp-validation-for="Menssagem" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuarioId" class="control-label"></label>
+                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para a lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
