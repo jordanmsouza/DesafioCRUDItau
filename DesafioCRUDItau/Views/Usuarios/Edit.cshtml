@@ -7,6 +7,75 @@
 <h1>Editar</h1>
 
 <h4>Usuário</h4>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+<!-- Adicionando Javascript -->
+<script>
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#Endereco").val("");
+                $("#Bairro").val("");
+                $("#Cidade").val("");
+                $("#Uf").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#Cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#Endereco").val("...");
+                        $("#Bairro").val("...");
+                        $("#Cidade").val("...");
+                        $("#Uf").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#Endereco").val(dados.logradouro);
+                                $("#Bairro").val(dados.bairro);
+                                $("#Cidade").val(dados.localidade);
+                                $("#Uf").val(dados.uf);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+
+</script>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -25,7 +94,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Endereco" class="control-label"></label>
-                <input asp-for="Endereco" class="form-control" />
+                <input asp-for="Endereco" class="form-control" id="Endereco" />
                 <span asp-validation-for="Endereco" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,17 +104,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="Bairro" class="control-label"></label>
-                <input asp-for="Bairro" class="form-control" />
+                <input asp-for="Bairro" class="form-control" id="Bairro"/>
                 <span asp-validation-for="Bairro" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Cidade" class="control-label"></label>
-                <input asp-for="Cidade" class="form-control" />
+                <input asp-for="Cidade" class="form-control" id="Cidade"/>
                 <span asp-validation-for="Cidade" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Uf" class="control-label"></label>
-                <input asp-for="Uf" class="form-control" />
+                <input asp-for="Uf" class="form-control" id="Uf"/>
                 <span asp-validation-for="Uf" class="text-danger"></span>
             </div>
             <div class="form-group">
